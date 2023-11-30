@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://192.168.30.126/ -->
+<link rel="icon" type="image/ico" href="/favicon.ico">
+<html lang="it">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>SCU HW Configuration</title>
+      <link rel="stylesheet" href="./style.css">
+    <script language="JavaScript">
+      selNum = selOpt = tmp = 0;
+      function myFunction() {
+        var formEm = document.getElementById("engMeter"),
+            eneM = formEm.getElementsByTagName("input"),
+            formGMT = document.getElementById("OffGMT");
+             
+        var prdCode = 0;
+        var d1 = (Date.parse(new Date) / 1000);
+
+
+        for (var i = 0, max = eneM.length; i < max; i += 1) {
+           // Take only those inputs which are checkbox
+           if (eneM[i].type === "radio" && eneM[i].checked) {
+              prdCode = selNum+parseInt(eneM[i].value, 16);
+           }
+        }
+
+        var name = "prdCode<" + prdCode + ">parDeT<" + d1 + ">";
+        let formData = new FormData(document.forms.person);
+        formData.append("middle", name);
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "prdCfg");
+        xhr.send(formData);
+        xhr.onload = function() {
+          if (xhr.status != 200) { 
+            alert(`Error`); // ad esempio 404: Not Found
+          } else { 
+            alert(`Prodotto Configurato!`); 
+          }
+        };
+      }
+
+      function hOther (optId)
+      {
+        document.getElementById("Typical").value = 32;
+        selOpt = optId;
+        switch(selOpt)
+        {
+        case 3:  //T85B0  205.T33/37-B0/D0
+        case 4:  //T85B0  205.T52/62/74/85-B0/D0
+            hW71B0();
+            document.getElementById("Ls_2").checked = true;
+            document.getElementById("checks_MFRE").checked = true;
+            document.getElementById("EnergyMeter_3").checked = true;
+            document.getElementById("checks_PMNG").checked = false;
+            if (selOpt == 3) {tmp = 16} else {tmp = 1};
+            document.getElementById("rs485Add").value = tmp;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 5:  //      205.T33/37-S0/U0
+        case 6:  //      205.T52/62/74/85-S0/U0
+            hW23S0();
+            document.getElementById("Ls_2").checked = true;
+            document.getElementById("checks_MFRE").checked = true;
+            document.getElementById("EnergyMeter_3").checked = true;
+            document.getElementById("checks_PMNG").checked = false;
+            if (selOpt == 5) {tmp = 16} else {tmp = 1};
+            document.getElementById("rs485Add").value = tmp;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 7:  //     205.W32/33/36/37-B0/D0
+        case 8:  //     205.W52/62/74/85-B0/D0
+            hW71B0();
+            document.getElementById("checks_MFRE").checked = true;
+            document.getElementById("EnergyMeter_3").checked = true;
+            document.getElementById("rs485Add").value = 1;
+            document.getElementById("checks_PMNG").checked = false;
+            if (selOpt == 7) {tmp = 16} else {tmp = 1};
+            document.getElementById("rs485Add").value = tmp;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 9:  //    205.W32/33/36/37-S0/U0
+        case 10: //    205.W52/62/74/85-S0/U0
+            hW23S0();
+            document.getElementById("checks_MFRE").checked = true;
+            document.getElementById("EnergyMeter_3").checked = true;
+            document.getElementById("rs485Add").value = 1;
+            document.getElementById("checks_PMNG").checked = false;
+            if (selOpt == 9) {tmp = 16} else {tmp = 1};
+            document.getElementById("rs485Add").value = tmp;
+            alert("Controlla Energy Meter!");
+            break;
+             
+        case 11:  //205.T113/119-B0/D0
+            hW23B0();
+            document.getElementById("Ls_2").checked = true;
+            document.getElementById("checks_ALFA").checked = false;
+            document.getElementById("checks_PMNG").checked = false;
+            document.getElementById("checks_WIFI").checked = true;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 12:  //205.T113/119-S0/U0
+            hW23S0();
+            document.getElementById("Ls_2").checked = true;
+            document.getElementById("checks_ALFA").checked = false;
+            document.getElementById("checks_PMNG").checked = false;
+            document.getElementById("checks_WIFI").checked = true;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 13:  //205.T213/219-B0/D0
+            hW23B0();
+            document.getElementById("Ls_2").checked = true;
+            document.getElementById("checks_ALFA").checked = true;
+            document.getElementById("checks_PMNG").checked = false;
+            document.getElementById("checks_WIFI").checked = true;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 14:  //  205.T213/219-S0/U0
+            hW23S0();
+            document.getElementById("Ls_2").checked = true;
+            document.getElementById("checks_ALFA").checked = true;
+            document.getElementById("checks_PMNG").checked = false;
+            document.getElementById("checks_WIFI").checked = true;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 15:  //   205.W113/119-B0/D0
+            hW23B0();
+            document.getElementById("checks_ALFA").checked = false;
+            document.getElementById("checks_PMNG").checked = false;
+            document.getElementById("checks_WIFI").checked = true;
+            alert("Controlla Energy Meter!");
+            break; 
+        case 16: //   205.W113/119-S0/U0
+          hW23S0();
+          document.getElementById("checks_ALFA").checked = false;
+          document.getElementById("checks_PMNG").checked = false;
+          document.getElementById("checks_WIFI").checked = true;
+          alert("Controlla Energy Meter!");
+          break; 
+        case 17: // 205.W213/219-B0/D0
+          hW23B0();
+          document.getElementById("checks_ALFA").checked = true;
+          document.getElementById("checks_PMNG").checked = false;
+          document.getElementById("checks_WIFI").checked = true;
+          alert("Controlla Energy Meter!");
+          break; 
+        case 18: // 205.W213/219-S0/U0
+          hW23S0();
+          document.getElementById("checks_ALFA").checked = true;
+          document.getElementById("checks_PMNG").checked = false;
+          document.getElementById("checks_WIFI").checked = true;
+          alert("Controlla Energy Meter!");
+          break; 
+        }
+        selNum=2048*(selOpt);
+      }
+
+      
+      function hSetChecks (p1, p2, p3, p4, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15)
+      {
+        document.getElementById("checks_WIFI").checked = false;
+        document.getElementById("checks_ALFA").checked = false;
+        document.getElementById("rs485Add").value = 16;
+        document.getElementById("Typical").value = 32;
+        document.getElementById(p1).checked = true; document.getElementById(p2).checked = true; 
+        document.getElementById("checks_RCDM").checked = p3;   document.getElementById("checks_LIDE").checked = p4;  
+        document.getElementById("checks_BLCK").checked = p5;   document.getElementById("actuators_BLCK").checked = p6; 
+        document.getElementById("checks_MIRR").checked = p7;  document.getElementById("actuators_RCBO").checked = p8;
+        document.getElementById("checks_PPSE").checked = p9;   document.getElementById("checks_PPLS").checked = p10;
+        document.getElementById("checks_MFRE").checked = p11;   document.getElementById("checks_EMTR").checked = p12; 
+        document.getElementById("checks_PMNG").checked = p13; document.getElementById("BatteryBackup").checked = p14;
+        document.getElementById("checks_VBUS").checked = p15;
+      }
+      function hW11B0 ()
+      {
+        p1="EnergyMeter_1"; p2="Ls_0";p3=p5=p6=p9=p10=p15=true; 
+        p4=p7=p8=p11=p12=p13=p14=false; selNum = 0;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+      }
+      function hW17B0 ()
+      {
+        p1="EnergyMeter_1"; p2="Ls_0";p3=p5=p6=p9=p10=p15=true; 
+        p4=p7=p8=p11=p12=p13=p14=false;  selNum=2048*1;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+      }
+      function hW17S0 ()
+      {
+        p1="EnergyMeter_1"; p2="Ls_0";p3=p7=p8=true; 
+        p4=p5=p6=p9=p10=p11=p12=p13=p14=p15=false; selNum = 2048*2; 
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+      }
+      function hW23B0 ()
+      {
+        p1="EnergyMeter_3"; p2="Ls_0";p3=p5=p6=p9=p10=p12=p13=p15=true; 
+        p4=p7=p8=p11=p14=false; selNum = 2048*5;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+      }
+      function hW23S0 ()
+      {
+        p1="EnergyMeter_3"; p2="Ls_0";p3=p7=p8=p12=p13=true; 
+        p4=p5=p6=p9=p10=p11=p14=p15=false; selNum = 2048*7;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+      }
+      function hW71B0 ()
+      {
+        p1="EnergyMeter_3"; p2="Ls_0";p3=p5=p6=p9=p10=p12=p13=p15 = true; 
+        p4=p7=p8=p11=p14=false; selNum = 2048*10;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+      }
+      function hCA21B ()
+      {
+        p1="EnergyMeter_3"; p2="Ls_3";p3=p4=p5=p6=p9=p10=p11=p12=p14=p15=true; 
+        p7=p8=p13=false; selNum = 2048*19;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+        alert("Controlla Energy Meter!");
+      }
+      function hWD21B ()
+      {
+        p1="EnergyMeter_3"; p2="Ls_0";p3=p4=p5=p6=p9=p10=p11=p12=p14=p15=true; 
+        p7=p8=p13=false; selNum = 2048*20;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+        alert("Controlla Energy Meter!");
+      }
+      function hAB33B ()
+      {
+        p1="EnergyMeter_3"; p2="Ls_1";p3=p4=p5=p6=p9=p10=p11=p12=p14=p15=true; 
+        p7=p8=p13=false; selNum = 2048*21;
+        hSetChecks(p1,p2,p3,p4,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15);
+        alert("Controlla Energy Meter!");
+      }
+    </script>
+   </head>
+   <body>
+       <div>
+          <div class="hwconf">
+             <h2>HW Setup SCU</h2>
+              <FORM id="noSave" name="xButton" action ="mainPage.html" METHOD="get">
+                <input type="submit" value="X"><br>
+              </FORM>
+             <div class="panel_container">
+                <div class="panel">
+                   <div class="panel" style="width: 120%;">
+                     <h1>Product Code</h1>
+                     <ul>
+                       <FORM id="socket" name="presa" METHOD="post">
+                       <table style="width:100%">
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hW11B0()"  ><span>205.W11-B0</span></span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(11)"><span>205.T113/119-B0/D0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hCA21B()" ><span style="color:red">204.CA21B/23B-T2T2</span></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hW17B0()" ><span>205.W17-B0/D0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(12)"><span>205.T113/119-S0/U0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hWD21B()" ><span style="color:blue">204.WD21B/23B-T2T2</span></li></td>
+                         </tr>
+                         <tr> 
+                          <td><li><input type="radio" name="rSel" onchange="hW17S0()" ><span>205.W17-S0/U0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(13)"><span>205.T213/219-B0/D0</span></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(3)"><span>205.T33/37-B0/D0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(14)"><span>205.T213/219-S0/U0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hAB33B()" ><span style="color:green">205.A-B/33/52/62-DD</span></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(4)"><span>205.T52/62/74/85-B0/D0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(15)"><span>205.W113/119-B0/D0</span></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(5)" ><span>205.T33/37-S0/U0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(16)"><span>205.W113/119-S0/U0</span></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(6)" ><span>205.T52/62/74/85-S0/U0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(17)"><span>205.W213/219-B0/D0</span></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(7)" ><span>205.W32/33/36/37-B0/D0</span></li></td>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(18)"><span>205.W213/219-S0/U0</span></li></td>
+                          <td><li></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(8)" ><span>205.W52/62/74/85-B0/D0</span></li></td>
+                          <td><li></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(9)" ><span>205.W32/33/36/37-S0/U0</span></li></td>
+                          <td><li></li></td>
+                         </tr>
+                         <tr>
+                          <td><li><input type="radio" name="rSel" onchange="hOther(10)" ><span>205.W52/62/74/85-S0/U0</span></li></td>
+                          <td><li></li></td>
+                         </tr>
+                         <tr>
+                          <td><li></li></td>
+                          <td><li></li></td>
+                         </tr>
+
+                       </table>
+                       </FORM>
+                     </ul>
+                  </div>
+                   <div class="panel" style="width: 100%;">
+                      <h1>Led Strip</h1>
+                      <ul>
+                        <FORM id="LedStrip" name="ls" METHOD="post">
+                         <li><input type="radio" name="radio_Ls" disabled id="Ls_0" value="06" style="margin-right: 5px;"><span style="vertical-align: super;">6</span> <input type="radio" name="radio_Ls" disabled id="Ls_1" value="12" style="margin-right: 5px;" check54 ><span style="vertical-align: super;">12</span></li>
+                         <li><input type="radio" name="radio_Ls" disabled id="Ls_2" value="09" style="margin-right: 5px;"><span style="vertical-align: super;">9</span> <input type="radio" name="radio_Ls" disabled id="Ls_3" value="18" style="margin-right: 5px;" check55 ><span style="vertical-align: super;">18</span></li>
+                       </FORM>
+                     </ul>
+                   </div>
+                </div>
+                <div class="panel" style="position:relative; left:80px;">
+                   <div class="panel" style="width: 80%;">
+                      <h1>EnergyMeter</h1>
+                      <ul>
+                        <FORM id="engMeter" name="em" METHOD="post">
+                       <table style="width:100%">
+                         <tr>
+                             <td><h1>Model</h1></td>
+                             <td><h1>Mono-Phase</h1></td>
+                             <td><h1>Tri-Phase</h1></td>
+                         </tr>
+                         <tr>
+                          <td><span>TA Analogico</span></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_1" value="01" ></li></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_10" value="81" check37 ></li></td>
+                         </tr>
+                         <tr>
+                          <td><span>Gavazzi (Code: 04/84)</span></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_2" value="04" ></li></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_4" value="84" ></li></td>
+                         </tr>
+                         <tr>
+                          <td><span>Algo2 (Code: 14/94)</span></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_3" value="14" ></li></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_5" value="94" ></li></td>
+                         </tr>
+                         <tr>
+                          <td><span>Lovato (Code: 40/C0)</span></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_6" value="40" ></li></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_7" value="C0" ></li></td>
+                         </tr>
+                         <tr>
+                          <td><span>SCAME (Code: 20/A0)</span></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_8" value="20" ></li></td>
+                          <td><li><input type="radio" name="radio_EnergyMeter" id="EnergyMeter_9" value="A0" ></li></td>
+                         </tr>
+                       </table>
+                       </FORM>
+                     </ul>
+                   </div>
+                   <div class="panel" style="width: 80%;">
+                      <h1>Imax</h1>
+                      <ul>
+                         <li><input type="text" disabled id="Typical" value="32"      style="margin-right: 5px; width: 30px; text-align: center;"><span>Typical</span></li>
+                         <li><input type="text" disabled id="Simplified" value="16"      style="margin-right: 5px; width: 30px; text-align: center;"><span>Simplified</span></li>
+                      </ul>
+                   </div>
+                   <div class="panel" style="width: 80%;">
+                      <h1>Battery</h1>
+                      <ul>
+                         <li><input type="checkbox" disabled id="BatteryBackup" value="undefined" style="margin-right: 5px;" check36 ><span style="vertical-align: super;">Battery Backup</span></li>
+                      </ul>
+                   </div>
+                   <div class="panel" style="width: 80%;">
+                      <h1>SCU Address</h1>
+                      <ul>
+                         <li><input type="text" disabled id="rs485Add" value="16"      style="margin-right: 5px; width: 30px; text-align: center;"><span>1..16</span></li>
+                      </ul>
+                   </div>
+                </div>
+                <div class="panel">
+                   <h1>Checks/Actuators</h1>
+                   <ul>
+                     <FORM id="infoItem" name="person" METHOD="post">
+                      <li><input type="checkbox" disabled id="checks_RCDM" value="undefined" style="margin-right: 5px;" check01 ><input type="checkbox" id="actuators_RCDM" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(RCDM) Residual Current Device Monitor</span></li>
+                      <li><input type="checkbox" disabled id="checks_LIDE" value="undefined" style="margin-right: 5px;" check02 ><input type="checkbox" id="actuators_LIDE" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(LIDE) Lid Presence</span></li>
+                      <li><input type="checkbox" disabled id="checks_VENT" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_VENT" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(VENT) Presence Ventilation</span></li>
+                      <li><input type="checkbox" disabled id="checks_BLCK" value="undefined" style="margin-right: 5px;" check04 ><input type="checkbox" disabled id="actuators_BLCK" style="margin-right: 5px;"            check05 ><span style="vertical-align: super;">(BLCK) Latching System Block</span></li>
+                      <li><input type="checkbox" disabled id="checks_RMEN" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_RMEN" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(RMEN) Remote Suspension</span></li>
+                      <li><input type="checkbox" disabled id="checks_STOP" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_STOP" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(STOP) Stop Charge</span></li>
+                      <li><input type="checkbox" disabled id="checks_MIRR" value="undefined" style="margin-right: 5px;" check08 ><input type="checkbox" disabled id="actuators_MIRR" style="margin-right: 5px;"            checked ><span style="vertical-align: super;">(MIRR) Mirror Contact</span></li>
+                      <li><input type="checkbox" disabled id="checks_RCBO" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" disabled id="actuators_RCBO" style="margin-right: 5px;"            check00 ><span style="vertical-align: super;">(RCBO) Current Protection</span></li>
+                      <li><input type="checkbox" disabled id="checks_CPSE" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_CPSE" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(CPSE) Short Circuit Control Pilot</span></li>
+                      <li><input type="checkbox" disabled id="checks_PPSE" value="undefined" style="margin-right: 5px;" check13 ><input type="checkbox" id="actuators_PPSE" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(PPSE) Short Circuit Plug Presence</span></li>
+                      <li><input type="checkbox" disabled id="checks_CPLS" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_CPLS" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(CPLS) Lost Control Pilot</span></li>
+                      <li><input type="checkbox" disabled id="checks_PPLS" value="undefined" style="margin-right: 5px;" check15 ><input type="checkbox" id="actuators_PPLS" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(PPLS) Lost Plug Presence</span></li>
+                      <li><input type="checkbox" disabled id="checks_VBUS" value="undefined" style="margin-right: 5px;" check22 ><input type="checkbox" id="actuators_VBUS" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(VBUS) Main Break Down</span></li>
+                      <li><input type="checkbox" disabled id="checks_MFRE" value="undefined" style="margin-right: 5px;" check17 ><input type="checkbox" id="actuators_MFRE" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(MFRE) Mifare Reader</span></li>
+                      <li><input type="checkbox" disabled id="checks_EMTR" value="undefined" style="margin-right: 5px;" check18 ><input type="checkbox" id="actuators_EMTR" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(EMTR) Energy Meter</span></li>
+                      <li><input type="checkbox" disabled id="checks_OVCE" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_OVCE" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(OVCE) Over Current Protection</span></li>
+                      <li><input type="checkbox" disabled id="checks_RCTE" value="undefined" style="margin-right: 5px;" checked ><input type="checkbox" id="actuators_RCTE" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(RCTE) Presence Rectifier Diode</span></li>
+                      <li><input type="checkbox" disabled id="checks_PMNG" value="undefined" style="margin-right: 5px;" check21 ><input type="checkbox" id="actuators_PMNG" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(PMNG) Power Management</span></li>
+                      <li><input type="checkbox" disabled id="checks_WIFI" value="undefined" style="margin-right: 5px;" check22 ><input type="checkbox" id="actuators_WIFI" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(WIFI) WIFI Status</span></li>
+                      <li><input type="checkbox" disabled id="checks_ALFA" value="undefined" style="margin-right: 5px;" check23 ><input type="checkbox" id="actuators_ALFA" style="margin-right: 5px; visibility: hidden;"><span style="vertical-align: super;">(ALFA) SINAPSI Status</span></li>
+                     </FORM>
+                   </ul>
+                </div>
+             </div>
+             <form id="uploadReq" action ="/hwConf.html" method="post">
+               <input type="button" value="Write" onclick="myFunction()">
+             </FORM>
+         </div>
+       </div>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C/DTD HTML 4.0 Transitional//EN">
+<html>
+
+<link rel="icon" type="image/ico" href="/favicon.ico">
+<link rel="stylesheet" type="text/css" href="style.css">
+<head>
+  <style>
+  table, th, td {
+    border: 1px solid black;
+    border: none;
+    border-collapse: collapse;
+    text-align:center;
+  }
+  th, td {
+    padding: 20px;
+  }
+  </style>
+  <META HTTP-EQUIV = "content-type" content="text/html; charset=ISO-8859-1;no-cache">
+  <title> SCU System Manager </title>
+    <script language="JavaScript">
+
+    function ModuloSelect(){
+      var txt = document.getElementById("descrId").value;
+      var txtPrd = document.getElementById("prdId").value;
+      var resTxt;
+      if ((txt == "") || (txtPrd == ""))
+      {
+        alert("Please insert a valid SN!!");
+      }  
+      else
+      {
+        var isHex = true;
+        if (txt.length >= 20)
+        {
+          if ((txt[0] == 'S') && (txt[2] == 'N'))
+          {
+            resTxt = txt.substr(4, 8).trim();
+          }
+          else
+          {
+            resTxt = txt.substr(12, 8).trim();
+            if (resTxt.length == 7)
+            {
+              resTxt = "0"+resTxt;
+            }
+          }
+        }
+        else
+        {
+          resTxt = txt;
+        }
+        isHex = resTxt.match("[0-9f-fF-F]+");
+
+        if (isHex == resTxt)
+        {
+          if (txtPrd.length != 9)
+          {
+            alert("Please insert a valid SN!!");
+          }
+          else
+          {
+            document.getElementById("scuSerial").innerHTML = txt;
+            document.getElementById("productSerial").innerHTML = txtPrd;
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "/setSerials");
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            var message = {
+              "scuSerialNumber":document.getElementById("scuSerial").innerHTML,
+              "productSerialNumber":document.getElementById("productSerial").innerHTML,
+            }
+            xhr.send(JSON.stringify(message));
+          }
+        }
+        else
+        {
+          alert("Wrong SN format! Example--> 12345678 or FFFFFFFF");
+        }
+      }
+    }
+
+    function stopCarica(){
+      var resTxt;
+
+      let formData = new FormData(document.forms.person);
+      resTxt = "Carica";
+      formData.append("Stop", resTxt);
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", "stpChg.cgi");
+      xhr.send(formData);
+    }
+
+    function stopRefresh(){
+      clearInterval(interval);
+    }
+
+    var ajaxRequest = new XMLHttpRequest();
+    function ajaxLoad(ajaxURL)
+    {
+      ajaxRequest.open('GET', ajaxURL, true);
+      ajaxRequest.onreadystatechange = function() {
+        if(ajaxRequest.readyState == 4 && ajaxRequest.status==200) {
+          var ajaxResult = JSON.parse(ajaxRequest.responseText);
+          document.getElementById('scuSerial').innerHTML = ajaxResult.scuSerialNumber;
+          document.getElementById('productSerial').innerHTML = ajaxResult.productSerialNumber;
+        }
+      }
+      ajaxRequest.send();
+    }
+
+    function UpdateScuSerial()   
+       {   
+         ajaxLoad('scuSerial');   
+       }  
+       setInterval(UpdateScuSerial, 10000);
+
+    </script>
+
+</head>
+
+  
+  <body>
+    <div style="height:100%;width:100%;margin:0 auto; border-radius:50px;">
+      <div style="text-align: center;">
+          <strong>Welcome to SCU Vx.y.zza HW AB Boot Vw.ya info and download page</strong>
+      </div>
+    </div>   
+    <br>
+    <table style="table-layout: auto; margin:0 auto;">
+      <div style="text-align: center;">
+      <tbody>                                          
+        <tr style="margin:0 auto;">
+          <th>
+            <strong>Current SCU / PRD SN: </strong>
+            <strong id="scuSerial"> 02:80:E1 </strong>
+            <strong> / </strong>
+            <strong id="productSerial"> 100xxxxxx </strong>
+          </th>
+          <th></th>
+          <th><strong>Functions</strong></th>
+        </tr>
+
+        <tr>
+          <td><strong>SCU SN: </strong> <input type="text" size="32" id="descrId" name="descrId" value="" autocomplete="off" maxlength="22" title="must be 8 numbers, all F to reset" onfocus="stopRefresh()"></td>
+          <td>                                                                                                                                                       
+            <table style="text-align: center; background-color: #FFFFFF; border: 2px"
+            cellspacing=2 cols=1 width="35%">
+              <tr style="text-align: center;" valign="baseline">
+                <td  style="text-align: center;" valign="top" width="40%"><span style="font-weight: bold; font-size: 40px">
+                  <pre class="tab"> SCUriga#1   NNNNPPNN</pre> 
+                  <pre class="tab">SCUriga#2    4567890</pre>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <form id="hwConf" action ="/hwConf" method="post" >
+              <input  style="margin-left: 0pt; height:50px; width:120px" type="submit" name="hwConf" value="HW Conf">
+            </FORM>
+            <br>
+            <form id="specF" action ="/specFunc" method="post" >
+              <input  style="margin-left: 0pt; height:50px; width:120px" type="submit" name="specFz" value="Special Functions">
+            </FORM>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Prd SN: </strong> <input type="text" size="32" id="prdId" name="prdId" value="" autocomplete="off" maxlength="20" title="must be 9 numbers starting with 100" onfocus="stopRefresh()">
+            <br>
+            <br>
+            <FORM id="infoMac" METHOD=POST ACTION="/infoMac.cgi">
+              <input style="margin-left: 50pt; height:30px; width:120px" type="button" value="Invia SN" onclick="ModuloSelect()">
+            </FORM>
+            <br>
+            <form id="reboot" action ="./reboot.html" method="post" >
+              <input style="margin-left: 50pt; height:30px; width:120px" type="submit" name="rebootFz" value="Reboot">
+            </FORM>
+            <br>
+            <form id="stopCharge" action ="./stpChg.cgi" method="post" >
+              <input style="margin-left: 50pt; height:30px; width:120px" type="button" value="Stop Carica Free" onclick="stopCarica()">
+            </FORM>
+          </td>
+          <td>
+            <table align="center" bgcolor="#FFFFFF" border=2 cellspacing=2 cols=1 width="35%">
+              <tr align="center" valign="baseline">
+                <td  align="center" valign="top" width="40%"><big><big><big><span style="font-weight: bold; line-height: 0em">
+                  <pre class="tab"><big><big>SCUriga#3   NNNNPPNN</big></big></pre> 
+                  <pre class="tab"><big><big>SCUriga#4    4567890</big></big></pre>
+                  <pre class="tab"><big><big>SCUriga#5     567890</big></big></pre>
+                  <pre class="tab"><big><big>SCUriga#6   34567890</big></big></pre></big></big></big></td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <form id="uploadReq" action ="/upload" enctype="multipart/form-data" method="post">
+              <input  style="margin-left: 0pt; height:50px; width:120px" type="submit" name="GoUpload" value="Upload FW">
+            </FORM>
+            <br>
+              <form id="prodConf" action ="/modelConf" method="post" >
+                <input  style="margin-left: 0pt; height:50px; width:120px" type="submit" name="hwConf" value="Prod. Conf">
+              </FORM>
+            <br>
+              <form id="siConf" action ="/sinapsiConf" method="post" >
+                <input  style="margin-left: 0pt; height:50px; width:120px;" type="submit" name="sinConf" value="SINAPSI" disabl#d >
+              </FORM>
+          </td>
+        </tr>
+      </tbody>
+    </div>
+    </table>
+
+  </body>
+</html>
+

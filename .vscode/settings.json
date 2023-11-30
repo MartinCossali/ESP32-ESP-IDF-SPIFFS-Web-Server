@@ -1,0 +1,14 @@
+{
+    "idf.adapterTargetName": "esp32c3",
+    "idf.portWin": "COM21",
+    "idf.flashType": "UART",
+    "idf.openOcdConfigs": [
+        "board/esp32c3-bridge.cfg"
+    ],
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "connect_wifi.h": "c",
+        "http_request.h": "c",
+        "station_info.h": "c"
+    }
+}
