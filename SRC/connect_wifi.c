@@ -1,8 +1,12 @@
 #include "connect_wifi.h"
 
-#define EXAMPLE_ESP_WIFI_SSID CONFIG_ESP_WIFI_SSID
-#define EXAMPLE_ESP_WIFI_PASS CONFIG_ESP_WIFI_PASSWORD
-#define EXAMPLE_ESP_MAXIMUM_RETRY CONFIG_ESP_MAXIMUM_RETRY
+#define EXAMPLE_ESP_WIFI_SSID           CONFIG_ESP_WIFI_SSID
+#define EXAMPLE_ESP_WIFI_PASS           CONFIG_ESP_WIFI_PASSWORD
+#define EXAMPLE_ESP_MAXIMUM_RETRY       CONFIG_ESP_MAXIMUM_RETRY
+#define ESP_MAX_STA_CONN                CONFIG_ESP_MAX_STA_CONN
+#define ESP_WIFI_ACCESS_POINT_SSID      CONFIG_ESP_WIFI_ACCESS_POINT_SSID
+#define ESP_WIFI_ACCESS_POINT_PASS      CONFIG_ESP_WIFI_ACCESS_POINT_PASS
+#define ESP_WIFI_ACCESS_POINT_CHANNEL   1
 
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
@@ -49,6 +53,13 @@ static void event_handler(void *arg, esp_event_base_t event_base,
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
         wifi_connect_status = 1;
     }
+    if (event_id == WIFI_EVENT_AP_STACONNECTED) {
+            wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
+            ESP_LOGI(TAG, "station join");
+        } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) {
+            wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
+            ESP_LOGI(TAG, "station leave");
+    }
 }
 
 void connect_wifi(void)
@@ -59,6 +70,7 @@ void connect_wifi(void)
 
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     esp_netif_create_default_wifi_sta();
+    esp_netif_create_default_wifi_ap();
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
@@ -85,11 +97,23 @@ void connect_wifi(void)
              * doesn't support WPA2, these mode can be enabled by commenting below line */
             .threshold.authmode = WIFI_AUTH_WPA2_PSK,
         },
+        .ap = {
+            .ssid = CONFIG_ESP_WIFI_ACCESS_POINT_SSID,
+            .ssid_len = strlen(CONFIG_ESP_WIFI_ACCESS_POINT_SSID),
+            .password = CONFIG_ESP_WIFI_ACCESS_POINT_PASS,
+            .channel = 1,
+            .max_connection = CONFIG_ESP_MAX_STA_CONN,
+            .authmode = WIFI_AUTH_WPA2_PSK,
+            .beacon_interval = 400,
+        }
     };
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+    //ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 
+    ESP_LOGI(TAG, "wifi_init_softap finished. SSID:%s password:%s channel:%d",
+                ESP_WIFI_ACCESS_POINT_SSID, ESP_WIFI_ACCESS_POINT_PASS, 1);
     ESP_LOGI(TAG, "wifi_init_sta finished.");
 
     /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum

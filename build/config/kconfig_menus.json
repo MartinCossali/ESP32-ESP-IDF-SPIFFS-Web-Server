@@ -4824,12 +4824,42 @@
             {
                 "children": [],
                 "depends_on": null,
-                "help": "Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.",
+                "help": "Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.\u00f9",
                 "id": "ESP_MAXIMUM_RETRY",
                 "name": "ESP_MAXIMUM_RETRY",
                 "range": null,
                 "title": "Maximum retry",
                 "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": null,
+                "help": "Set the Maximum number of STA connects to AP.",
+                "id": "ESP_MAX_STA_CONN",
+                "name": "ESP_MAX_STA_CONN",
+                "range": null,
+                "title": "Maximum STA connections",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": null,
+                "help": "SSID (network name) for the example to connect to.",
+                "id": "ESP_WIFI_ACCESS_POINT_SSID",
+                "name": "ESP_WIFI_ACCESS_POINT_SSID",
+                "range": null,
+                "title": "AP SSID",
+                "type": "string"
+            },
+            {
+                "children": [],
+                "depends_on": null,
+                "help": "WiFi password (WPA or WPA2) for the example to use.",
+                "id": "ESP_WIFI_ACCESS_POINT_PASS",
+                "name": "ESP_WIFI_ACCESS_POINT_PASS",
+                "range": null,
+                "title": "AP Password",
+                "type": "string"
             }
         ],
         "depends_on": null,
