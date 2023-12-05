@@ -9,7 +9,7 @@
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",
-            "url": "http://192.168.5.76:80",
+            "url": "https://192.168.5.76:433",
             "webRoot": "${workspaceFolder}"
         }
        

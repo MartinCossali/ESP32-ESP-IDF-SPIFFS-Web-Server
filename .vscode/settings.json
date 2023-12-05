@@ -9,6 +9,7 @@
     "files.associations": {
         "connect_wifi.h": "c",
         "http_request.h": "c",
-        "station_info.h": "c"
+        "station_info.h": "c",
+        "keep_alive.h": "c"
     }
 }

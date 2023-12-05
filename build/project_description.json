@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "esp32_spiffs_webserver",
-    "project_version":    "f549792-dirty",
+    "project_version":    "10c3d7c-dirty",
     "project_path":       "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server",
     "idf_path":           "C:/Users/CSSMTN/esp/esp-idf",
     "build_dir":          "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build",
@@ -363,15 +363,15 @@
             "target": "___idf_esp_https_server",
             "prefix": "idf",
             "dir": "C:/Users/CSSMTN/esp/esp-idf/components/esp_https_server",
-            "type": "CONFIG_ONLY",
+            "type": "LIBRARY",
             "lib": "__idf_esp_https_server",
             "reqs": [ "esp_http_server", "esp-tls" ],
             "priv_reqs": [ "lwip" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "file": "",
-            "sources": [],
-            "include_dirs": []
+            "file": "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/esp_https_server/libesp_https_server.a",
+            "sources": [ "C:/Users/CSSMTN/esp/esp-idf/components/esp_https_server/src/https_server.c" ],
+            "include_dirs": [ "include" ]
         },
         "esp_hw_support": {
             "alias": "idf::esp_hw_support",
@@ -790,7 +790,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/main/libmain.a",
-            "sources": [ "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/main/main.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/connect_wifi.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/http_request.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/station_info.c" ],
+            "sources": [ "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/main/main.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/connect_wifi.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/http_request.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/station_info.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/esp_https_server.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/SRC/keep_alive.c", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/servercert.crt.S", "C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/prvtkey.crt.S" ],
             "include_dirs": [ ".", "../INC" ]
         },
         "mbedtls": {

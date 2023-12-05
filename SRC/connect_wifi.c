@@ -17,11 +17,10 @@ static EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT BIT1
 
-
 static int s_retry_num = 0;
 int wifi_connect_status = 0;
 
-static const char *TAG = "wifi_connect"; // TAG for debug
+static const char *TAG = "WIFI_CONN"; // TAG for debug
 
 static void event_handler(void *arg, esp_event_base_t event_base,
                           int32_t event_id, void *event_data)
@@ -108,7 +107,6 @@ void connect_wifi(void)
         }
     };
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
-    //ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 

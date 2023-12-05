@@ -1,4 +1,6 @@
 #include "station_info.h"
+#include <esp_https_server.h>
+#include "esp_tls.h"
 
 /*
 *********************************** SCAME ************************************
@@ -92,3 +94,11 @@ static uint16_t extract_led_strip_code_from_string (char* string);
 static uint16_t extract_operative_mode_from_string (char* string);
 
 httpd_handle_t setup_server(void);
+
+void https_server_user_callback(esp_https_server_user_cb_arg_t *user_cb);
+void print_peer_cert_info(const mbedtls_ssl_context *ssl);
+
+void disconnect_handler(void* arg, esp_event_base_t event_base,
+                               int32_t event_id, void* event_data);
+void connect_handler(void* arg, esp_event_base_t event_base,
+                            int32_t event_id, void* event_data);

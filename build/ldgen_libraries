@@ -46,6 +46,7 @@ C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/tcp_transport/libtcp_
 C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/esp_http_client/libesp_http_client.a
 C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/esp_http_server/libesp_http_server.a
 C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/esp_https_ota/libesp_https_ota.a
+C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/esp_https_server/libesp_https_server.a
 C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/esp_lcd/libesp_lcd.a
 C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/protobuf-c/libprotobuf-c.a
 C:/Espressif/ESP32-ESP-IDF-SPIFFS-Web-Server/build/esp-idf/protocomm/libprotocomm.a

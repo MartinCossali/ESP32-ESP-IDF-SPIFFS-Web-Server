@@ -11,6 +11,9 @@
 
 #include "connect_wifi.h"
 #include "http_request.h"
+#include <esp_https_server.h>
+#include "esp_tls.h"
+#include "keep_alive.h"
 
 
 static const char *TAG = "espressif"; // TAG for debug
@@ -18,6 +21,7 @@ static const char *TAG = "espressif"; // TAG for debug
 void app_main()
 {
     // Initialize NVS
+    static httpd_handle_t server = NULL;
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
@@ -25,12 +29,16 @@ void app_main()
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-    connect_wifi();
 
+    connect_wifi();
     if (wifi_connect_status)
     {
         ESP_LOGI(TAG, "SPIFFS Web Server is running ... ...\n");
         init_web_page_buffer();
+
+        ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &server));
+        ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &server));
+
         setup_server();
     }
 }
